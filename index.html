@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saipul Anuar - Professional Login Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #0f172a;
+        --secondary: #1e293b;
+        --accent: #3b82f6;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --border: #334155;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1e293b 50%,
+          #334155 100%
+        );
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .code-font {
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+      }
+
+      .glass-morphism {
+        background: rgba(30, 41, 59, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .terminal-window {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .terminal-header {
+        background: #1e293b;
+        padding: 12px 16px;
+        border-bottom: 1px solid #334155;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .terminal-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+
+      .dot-red {
+        background: #ef4444;
+      }
+      .dot-yellow {
+        background: #f59e0b;
+      }
+      .dot-green {
+        background: #10b981;
+      }
+
+      .input-field {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid #334155;
+        color: #f8fafc;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .input-field:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        background: rgba(15, 23, 42, 0.95);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border: 1px solid #2563eb;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .btn-secondary {
+        background: rgba(51, 65, 85, 0.5);
+        border: 1px solid #475569;
+        color: #cbd5e1;
+        transition: all 0.3s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(71, 85, 105, 0.7);
+        border-color: #64748b;
+      }
+
+      .floating-particles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(59, 130, 246, 0.1);
+        border-radius: 50%;
+        animation: float 20s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .typing-animation {
+        overflow: hidden;
+        border-right: 2px solid #3b82f6;
+        white-space: nowrap;
+        animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #3b82f6;
+        }
+      }
+
+      .slide-in {
+        animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .code-block {
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #cbd5e1;
+      }
+
+      .syntax-keyword {
+        color: #f472b6;
+      }
+      .syntax-string {
+        color: #34d399;
+      }
+      .syntax-comment {
+        color: #6b7280;
+        font-style: italic;
+      }
+      .syntax-function {
+        color: #60a5fa;
+      }
+    </style>
+  </head>
+  <body class="relative">
+    <!-- Floating Particles Background -->
+    <div class="floating-particles">
+      <div
+        class="particle"
+        style="left: 10%; width: 4px; height: 4px; animation-delay: 0s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 20%; width: 6px; height: 6px; animation-delay: 2s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 30%; width: 3px; height: 3px; animation-delay: 4s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 40%; width: 5px; height: 5px; animation-delay: 6s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 50%; width: 4px; height: 4px; animation-delay: 8s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 60%; width: 7px; height: 7px; animation-delay: 10s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 70%; width: 3px; height: 3px; animation-delay: 12s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 80%; width: 5px; height: 5px; animation-delay: 14s"
+      ></div>
+      <div
+        class="particle"
+        style="left: 90%; width: 4px; height: 4px; animation-delay: 16s"
+      ></div>
+    </div>
+
+    <div
+      class="min-h-screen flex items-center justify-center p-4 relative z-10"
+    >
+      <div class="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
+        <!-- Left Side - Code Preview -->
+        <div class="hidden lg:block slide-in">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="terminal-dot dot-red"></div>
+              <div class="terminal-dot dot-yellow"></div>
+              <div class="terminal-dot dot-green"></div>
+              <span class="code-font text-sm text-slate-400 ml-4"
+                >auth.service.ts</span
+              >
+              <div class="ml-auto flex items-center gap-2">
+                <div class="status-indicator"></div>
+                <span class="text-xs text-slate-400">Connected</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <div class="code-block">
+                <div class="syntax-comment">
+                  // Professional Authentication System
+                </div>
+                <div>
+                  <span class="syntax-keyword">class</span>
+                  <span class="syntax-function">AuthService</span> {
+                </div>
+                <div class="ml-4">
+                  <span class="syntax-keyword">async</span>
+                  <span class="syntax-function">authenticate</span>(credentials)
+                  {
+                </div>
+                <div class="ml-8">
+                  <span class="syntax-keyword">const</span> response =
+                  <span class="syntax-keyword">await</span>
+                  <span class="syntax-function">fetch</span>(<span
+                    class="syntax-string"
+                    >'/api/auth'</span
+                  >);
+                </div>
+                <div class="ml-8">
+                  <span class="syntax-keyword">return</span> response.<span
+                    class="syntax-function"
+                    >json</span
+                  >();
+                </div>
+                <div class="ml-4">}</div>
+                <div>}</div>
+                <br />
+                <div class="syntax-comment">// Secure token management</div>
+                <div>
+                  <span class="syntax-keyword">const</span> token =
+                  <span class="syntax-function">generateJWT</span>(user);
+                </div>
+              </div>
+
+              <div
+                class="mt-6 p-4 bg-slate-800 rounded-lg border border-slate-600"
+              >
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span class="text-sm text-slate-300 code-font"
+                    >System Status</span
+                  >
+                </div>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div>✓ Database: Connected</div>
+                  <div>✓ Redis Cache: Active</div>
+                  <div>✓ JWT Service: Running</div>
+                  <div>✓ Rate Limiter: Enabled</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="slide-in">
+          <div class="glass-morphism rounded-2xl p-8 max-w-md mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+              <h1 class="text-2xl font-bold text-slate-100 mb-2">
+                DevAuth Portal
+              </h1>
+              <p class="text-slate-400 typing-animation code-font text-sm">
+                Secure developer authentication system
+              </p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="authForm" class="space-y-6">
+              <!-- Username/Email Field -->
+              <div class="space-y-2">
+                <label
+                  for="username"
+                  class="block text-sm font-medium text-slate-300"
+                >
+                  Username / Email
+                </label>
+                <div class="relative">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none code-font"
+                    placeholder="emailmu@gmail.com"
+                    required
+                  />
+                  <div
+                    class="absolute inset-y-0 right-0 flex items-center pr-3"
+                  >
+                    <svg
+                      class="w-5 h-5 text-slate-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Password Field -->
+              <div class="space-y-2">
+                <label
+                  for="password"
+                  class="block text-sm font-medium text-slate-300"
+                >
+                  Password
+                </label>
+                <div class="relative">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="input-field w-full px-4 py-3 rounded-lg focus:outline-none code-font pr-12"
+                    placeholder="••••••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    id="togglePassword"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-300 transition-colors"
+                  >
+                    <svg
+                      id="eyeIcon"
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      ></path>
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Options -->
+              <div class="flex items-center justify-between">
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    class="w-4 h-4 text-blue-600 bg-slate-700 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
+                  />
+                  <span class="ml-2 text-sm text-slate-400"
+                    >Remember session</span
+                  >
+                </label>
+                <a
+                  href="#"
+                  class="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Reset password?
+                </a>
+              </div>
+
+              <!-- Login Button -->
+              <button
+                type="submit"
+                class="btn-primary w-full py-3 px-4 rounded-lg font-semibold text-white focus:outline-none focus:ring-4 focus:ring-blue-500/50"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                    ></path>
+                  </svg>
+                  Authenticate
+                </span>
+              </button>
+
+              <!-- Divider -->
+              <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full border-t border-slate-600"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                  <span class="px-2 bg-slate-800 text-slate-400 code-font"
+                    >or continue with</span
+                  >
+                </div>
+              </div>
+
+              <!-- OAuth Buttons -->
+              <div class="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  class="btn-secondary flex items-center justify-center px-4 py-2 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-slate-500"
+                >
+                  <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"
+                    />
+                  </svg>
+                  GitHub
+                </button>
+                <button
+                  type="button"
+                  class="btn-secondary flex items-center justify-center px-4 py-2 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-slate-500"
+                >
+                  <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  Google
+                </button>
+              </div>
+            </form>
+
+            <!-- Footer -->
+            <div class="text-center mt-8 pt-6 border-t border-slate-600">
+              <p class="text-slate-400 text-sm">
+                Need access?
+                <a
+                  href="#"
+                  class="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                >
+                  Request developer account
+                </a>
+              </p>
+              <div
+                class="mt-4 flex items-center justify-center gap-4 text-xs text-slate-500"
+              >
+                <span class="code-font">v2.1.4</span>
+                <span>•</span>
+                <span>API Status: Online</span>
+                <span>•</span>
+                <span>Uptime: 99.9%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Professional authentication system simulation
+      class AuthenticationSystem {
+        constructor() {
+          this.initializeEventListeners();
+          this.startSystemMonitoring();
+        }
+
+        initializeEventListeners() {
+          // Password visibility toggle
+          document
+            .getElementById("togglePassword")
+            .addEventListener("click", this.togglePasswordVisibility);
+
+          // Form submission
+          document
+            .getElementById("authForm")
+            .addEventListener("submit", this.handleAuthentication.bind(this));
+
+          // OAuth handlers
+          document.querySelectorAll(".btn-secondary").forEach((btn) => {
+            btn.addEventListener("click", this.handleOAuthLogin.bind(this));
+          });
+
+          // Link handlers
+          document.querySelectorAll('a[href="#"]').forEach((link) => {
+            link.addEventListener("click", this.handleLinkClick.bind(this));
+          });
+        }
+
+        togglePasswordVisibility() {
+          const passwordInput = document.getElementById("password");
+          const eyeIcon = document.getElementById("eyeIcon");
+
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.innerHTML = `
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                    `;
+          } else {
+            passwordInput.type = "password";
+            eyeIcon.innerHTML = `
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    `;
+          }
+        }
+
+        async handleAuthentication(e) {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+          const credentials = {
+            username: formData.get("username"),
+            password: formData.get("password"),
+          };
+
+          const submitButton = e.target.querySelector('button[type="submit"]');
+          const originalContent = submitButton.innerHTML;
+
+          // Show loading state
+          submitButton.innerHTML = `
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Authenticating...
+                    </span>
+                `;
+          submitButton.disabled = true;
+
+          // Simulate API call
+          try {
+            await this.simulateAuthRequest(credentials);
+            this.showSuccessMessage(
+              "Authentication successful! Redirecting to dashboard..."
+            );
+
+            setTimeout(() => {
+              this.simulateRedirect();
+            }, 2000);
+          } catch (error) {
+            this.showErrorMessage(
+              "Authentication failed. Please check your credentials."
+            );
+            submitButton.innerHTML = originalContent;
+            submitButton.disabled = false;
+          }
+        }
+
+        async simulateAuthRequest(credentials) {
+          // Simulate network delay
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // Simulate success for demo purposes
+          if (credentials.username && credentials.password) {
+            return { success: true, token: "jwt_token_here" };
+          } else {
+            throw new Error("Invalid credentials");
+          }
+        }
+
+        handleOAuthLogin(e) {
+          const provider = e.currentTarget.textContent.trim();
+          this.showInfoMessage(`Redirecting to ${provider} OAuth...`);
+
+          setTimeout(() => {
+            this.showSuccessMessage(`${provider} authentication successful!`);
+          }, 1500);
+        }
+
+        handleLinkClick(e) {
+          e.preventDefault();
+          const linkText = e.target.textContent.trim();
+
+          if (linkText.includes("Reset password")) {
+            this.showInfoMessage(
+              "Password reset email sent to your registered email address."
+            );
+          } else if (linkText.includes("Request developer account")) {
+            this.showInfoMessage("Developer account request form opened.");
+          }
+        }
+
+        showSuccessMessage(message) {
+          this.showNotification(message, "success");
+        }
+
+        showErrorMessage(message) {
+          this.showNotification(message, "error");
+        }
+
+        showInfoMessage(message) {
+          this.showNotification(message, "info");
+        }
+
+        showNotification(message, type) {
+          const notification = document.createElement("div");
+          const colors = {
+            success: "bg-green-500",
+            error: "bg-red-500",
+            info: "bg-blue-500",
+          };
+
+          notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+          notification.textContent = message;
+
+          document.body.appendChild(notification);
+
+          setTimeout(() => {
+            notification.style.transform = "translateX(0)";
+          }, 100);
+
+          setTimeout(() => {
+            notification.style.transform = "translateX(full)";
+            setTimeout(() => {
+              document.body.removeChild(notification);
+            }, 300);
+          }, 4000);
+        }
+
+        simulateRedirect() {
+          document.body.innerHTML = `
+                    <div class="min-h-screen bg-slate-900 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl font-bold text-white mb-2">Authentication Successful</h1>
+                            <p class="text-slate-400">Redirecting to developer dashboard...</p>
+                            <div class="mt-4">
+                                <div class="animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+
+        startSystemMonitoring() {
+          // Simulate real-time system status updates
+          setInterval(() => {
+            const statusElements =
+              document.querySelectorAll(".status-indicator");
+            statusElements.forEach((el) => {
+              el.style.background = Math.random() > 0.1 ? "#10b981" : "#f59e0b";
+            });
+          }, 5000);
+        }
+      }
+
+      // Initialize the authentication system
+      document.addEventListener("DOMContentLoaded", () => {
+        new AuthenticationSystem();
+      });
+
+      // Add some dynamic terminal-like effects
+      function updateTerminalContent() {
+        const codeBlock = document.querySelector(".code-block");
+        if (codeBlock) {
+          const lines = codeBlock.children;
+          for (let i = 0; i < lines.length; i++) {
+            setTimeout(() => {
+              lines[i].style.opacity = "0.7";
+              setTimeout(() => {
+                lines[i].style.opacity = "1";
+              }, 100);
+            }, i * 200);
+          }
+        }
+      }
+
+      // Run terminal animation on load
+      setTimeout(updateTerminalContent, 1000);
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'975c77b9d107602f',t:'MTc1NjMwNzEzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
